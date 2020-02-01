@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import airlinguist from "./imgs/AirLinguist.png";
 import airudite from "./imgs/Airudite.png";
 import arslonga from "./imgs/ArsLonga.png";
@@ -62,7 +64,7 @@ const audioPaths = {
 export const normalizeFlight = flight => {
   return {
     destination: flight["Location Name"],
-    status: flight["Departure Status"],
+    status: flight["FIDS STATUS"],
     carrier: imagepaths[flight["Airline"].replace(/ .*/, "").toLowerCase()],
     details: [
       { name: flight["Category 1"], value: flight["Narrative 1"] },
@@ -84,4 +86,18 @@ export const findAudio = destination => {
     audioPaths[destination.replace(/[\W_]+/g, "").toLowerCase()] ||
     audioPaths[audioNames[(audioNames.length * Math.random()) << 0]]
   );
+};
+
+export const determineOnTimeStatus = flight => {
+  const now = moment();
+  if (flight.status !== "On Time") {
+    return flight.status;
+  }
+  if (flight.departureTime < now.valueOf()) {
+    return "Departed";
+  }
+  if (flight.departureTime < now.add(30, "minutes").valueOf()) {
+    return "Boarding";
+  }
+  return "On Time";
 };

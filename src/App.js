@@ -6,8 +6,9 @@ import findIndex from "lodash/findIndex";
 import omit from "lodash/omit";
 import { fetchFlights } from "./FlightsAPI";
 import logo from "./imgs/InterimaginaryDepartures-logo.png";
+import { determineOnTimeStatus } from "./dataUtils";
 
-const DEFAULT_FLIGHT_SEPARATION = 1;
+const DEFAULT_FLIGHT_SEPARATION = 10;
 
 function App() {
   const [currentTime, setCurrentTime] = useState(moment().valueOf());
@@ -16,7 +17,7 @@ function App() {
   const loadAndSetFlights = (separation = DEFAULT_FLIGHT_SEPARATION) => {
     fetchFlights(separation).then(
       (
-        flights // start the flights every 3 minutes
+        flights // start the flights every 10 minutes
       ) => {
         console.log(
           `flights response ${JSON.stringify(
@@ -48,7 +49,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(moment().valueOf());
-    }, 1000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [setCurrentTime]);
 
@@ -57,7 +58,12 @@ function App() {
       <div className="app-title">
         <img alt="Interimaginary Departures" src={logo} />
       </div>
-      <FlightDeparturesTable flights={flights} />
+      <FlightDeparturesTable
+        flights={flights.map(flight => ({
+          ...flight,
+          status: determineOnTimeStatus(flight)
+        }))}
+      />
     </div>
   );
 }
