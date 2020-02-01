@@ -20,7 +20,9 @@ const FlightDeparturesTableRow = ({
   status
 }) => (
   <tr className={classnames(styles.row, className)}>
-    <td>{destination}</td>
+    <td data-id="destination">
+      <span title={destination}>{destination}</span>
+    </td>
     <td className={styles.carrier}>
       <img alt="carrier" src={carrier} />
     </td>

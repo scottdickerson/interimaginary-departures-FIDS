@@ -8,3 +8,13 @@
 .row td:last-child {
   padding-right: 8rem;
 }
+
+.row td {
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+.row [data-id="destination"] {
+  width: 600px;
+  max-width: 600px;
+}

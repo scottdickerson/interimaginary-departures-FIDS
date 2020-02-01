@@ -16,10 +16,11 @@ const propTypes = {
       /** timestamp of the departure time */
       departureTime: PropTypes.number.isRequired
     })
-  )
+  ),
+  startGray: PropTypes.bool
 };
 
-const FlightDeparturesTable = ({ flights }) => (
+const FlightDeparturesTable = ({ flights, startGray }) => (
   <table className={styles.table}>
     <thead>
       <FlightDeparturesTableHeader />
@@ -28,7 +29,7 @@ const FlightDeparturesTable = ({ flights }) => (
       {flights.map((flight, index) => (
         <FlightDeparturesTableRow
           key={`row-${flight.destination}`}
-          className={index % 2 === 0 && styles.gray}
+          className={index % 2 === (startGray ? 0 : 1) && styles.gray}
           {...flight}
         />
       ))}
