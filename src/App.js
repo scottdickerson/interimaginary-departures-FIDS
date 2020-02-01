@@ -17,6 +17,11 @@ function App() {
   const [currentTime, setCurrentTime] = useState(moment().valueOf());
   const [flights, setFlights] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentDay, setCurrentDay] = useState(moment().dayOfYear());
+  // reload the flights data if we switch days
+  useEffect(() => {
+    loadAndSetFlights();
+  }, [currentDay]);
 
   const loadAndSetFlights = (separation = DEFAULT_FLIGHT_SEPARATION) => {
     fetchFlights().then(
@@ -53,6 +58,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(moment().valueOf());
+      setCurrentDay(moment().dayOfYear());
     }, 10000);
     return () => clearInterval(interval);
   }, [setCurrentTime]);
