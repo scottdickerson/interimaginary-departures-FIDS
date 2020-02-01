@@ -88,7 +88,7 @@ export const findAudio = destination => {
   );
 };
 
-export const determineOnTimeStatus = flight => {
+export const determineOnTimeStatus = (flight, boardingTime) => {
   const now = moment();
   if (flight.status !== "On Time") {
     return flight.status;
@@ -96,7 +96,7 @@ export const determineOnTimeStatus = flight => {
   if (flight.departureTime < now.valueOf()) {
     return "Departed";
   }
-  if (flight.departureTime < now.add(30, "minutes").valueOf()) {
+  if (flight.departureTime < now.add(boardingTime, "minutes").valueOf()) {
     return "Boarding";
   }
   return "On Time";

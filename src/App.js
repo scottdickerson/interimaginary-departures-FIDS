@@ -9,8 +9,9 @@ import { fetchFlights } from "./FlightsAPI";
 import logo from "./imgs/InterimaginaryDepartures-logo.png";
 import { determineOnTimeStatus } from "./dataUtils";
 
-const DEFAULT_FLIGHT_SEPARATION = 10;
+const DEFAULT_FLIGHT_SEPARATION = 0.25;
 const FLIGHTS_PER_PAGE = 27;
+const BOARDING_TIME = 5;
 
 function App() {
   const [currentTime, setCurrentTime] = useState(moment().valueOf());
@@ -79,7 +80,7 @@ function App() {
           .slice(currentIndex, currentIndex + FLIGHTS_PER_PAGE)
           .map(flight => ({
             ...flight,
-            status: determineOnTimeStatus(flight)
+            status: determineOnTimeStatus(flight, BOARDING_TIME)
           }))}
       />
     </div>
