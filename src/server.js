@@ -3,23 +3,26 @@ const path = require("path");
 const app = express();
 const cors = require("cors");
 const csvtojson = require("csvtojson");
-const lodash = require("lodash");
+const addDepartureTimes = require("./serverDataUtils").addDepartureTimes;
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, "build")));
 
 function loadFlights() {
-  return csvtojson()
-    .fromFile(
-      path.resolve(
-        __dirname,
-        "./data/Interimaginary Departures Data Set - Sheet1.csv"
+  return (
+    csvtojson()
+      .fromFile(
+        path.resolve(
+          __dirname,
+          "./data/Interimaginary Departures Data Set - Sheet1.csv"
+        )
       )
-    )
-    .then(flights => {
-      return lodash.sortBy(flights, "name");
-    })
-    .catch(error => console.log(error));
+      // Add departure times to each flight
+      .then(flights => {
+        return addDepartureTimes(flights);
+      })
+      .catch(error => console.log(error))
+  );
 }
 
 app.get("/flights", function(req, res) {

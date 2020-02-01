@@ -19,7 +19,7 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const loadAndSetFlights = (separation = DEFAULT_FLIGHT_SEPARATION) => {
-    fetchFlights(separation).then(
+    fetchFlights().then(
       (
         flights // start the flights every 10 minutes
       ) => {
