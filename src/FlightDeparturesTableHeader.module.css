@@ -1,0 +1,16 @@
+.header {
+  font-family: HelveticaNeueRegular;
+  font-size: 43px;
+  letter-spacing: 0.86px;
+  color: #808080;
+  text-align: left;
+}
+.header th:first-child {
+  padding-left: 12rem;
+}
+.header th:last-child {
+  padding-right: 8rem;
+}
+[data-id="destination"] {
+  width: 600px;
+}

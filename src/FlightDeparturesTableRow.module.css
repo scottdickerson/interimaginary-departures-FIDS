@@ -1,0 +1,10 @@
+.carrier img {
+  width: 320px;
+  vertical-align: middle;
+}
+.row td:first-child {
+  padding-left: 12rem;
+}
+.row td:last-child {
+  padding-right: 8rem;
+}
