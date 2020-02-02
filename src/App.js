@@ -7,12 +7,13 @@ import omit from "lodash/omit";
 import sortBy from "lodash/sortBy";
 import { fetchFlights } from "./FlightsAPI";
 import logo from "./imgs/InterimaginaryDepartures-logo.png";
-import { determineOnTimeStatus } from "./dataUtils";
+import { determineOnTimeStatus, filterFlights } from "./dataUtils";
 
 const DEFAULT_FLIGHT_SEPARATION = 0.25;
 const FLIGHTS_PER_PAGE = 27;
 // Show Now Boarding for any flight within the next 3.5 minutes
 const BOARDING_TIME = 3.5;
+const PAGE_DELAY = 30;
 
 function App() {
   const [currentTime, setCurrentTime] = useState(moment().valueOf());
@@ -33,7 +34,7 @@ function App() {
           2
         )}`
       );
-      setFlights(sortBy(flights, "destination"));
+      setFlights(filterFlights(sortBy(flights, "destination")));
     });
   };
 
@@ -68,7 +69,7 @@ function App() {
           ? 0
           : currentIndex + FLIGHTS_PER_PAGE
       );
-    }, 5000);
+    }, PAGE_DELAY * 1000);
     return () => clearInterval(interval);
   }, [setCurrentIndex, flights]);
 

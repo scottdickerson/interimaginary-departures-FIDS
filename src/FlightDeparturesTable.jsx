@@ -20,22 +20,24 @@ const propTypes = {
   startGray: PropTypes.bool
 };
 
-const FlightDeparturesTable = ({ flights, startGray }) => (
-  <table className={styles.table}>
-    <thead>
-      <FlightDeparturesTableHeader />
-    </thead>
-    <tbody>
-      {flights.map((flight, index) => (
-        <FlightDeparturesTableRow
-          key={`row-${flight.destination}-${index}`}
-          className={index % 2 === (startGray ? 0 : 1) && styles.gray}
-          {...flight}
-        />
-      ))}
-    </tbody>
-  </table>
-);
+const FlightDeparturesTable = ({ flights, startGray }) => {
+  return (
+    <table className={styles.table}>
+      <thead>
+        <FlightDeparturesTableHeader />
+      </thead>
+      <tbody>
+        {flights.map((flight, index) => (
+          <FlightDeparturesTableRow
+            key={`row-${flight.destination}-${index}`}
+            className={index % 2 === (startGray ? 0 : 1) && styles.gray}
+            {...flight}
+          />
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 FlightDeparturesTable.propTypes = propTypes;
 export default FlightDeparturesTable;

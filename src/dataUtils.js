@@ -1,4 +1,6 @@
 import moment from "moment";
+import find from "lodash/find";
+import findIndex from "lodash/findIndex";
 
 import airlinguist from "./imgs/AirLinguist.png";
 import airudite from "./imgs/Airudite.png";
@@ -74,6 +76,42 @@ export const normalizeFlight = flight => {
     ],
     departureTime: flight.departureTime
   };
+};
+
+/**
+ * Using the current time, find the next flight
+ * @param {*} flights
+ * @param {*} now, timestamp of right now
+ */
+export const filterFlights = (flights, now = moment().valueOf()) => {
+  const replaceFlight = (flights, currentFlight, newFlight) =>
+    flights.slice(
+      findIndex(flights, { destination: currentFlight.destination }),
+      1,
+      newFlight
+    );
+  return flights.reduce((acc, flight) => {
+    // do we have the flight already in the list
+    const foundFlight = find(acc, { destination: flight.destination });
+    // if we don't pop it on the list
+    if (!foundFlight) {
+      acc.push(flight);
+    } else if (foundFlight.departureTime < now) {
+      // if the current flight in the list is in the past
+      if (
+        flight.departureTime < now &&
+        flight.departureTime > foundFlight.departureTime
+      ) {
+        // if I am also in the past but more recent, I should replace the flight
+        replaceFlight(acc, foundFlight, flight);
+      } // otherwise leave the newer flight
+    } else if (flight.departureTime < foundFlight.departureTime) {
+      // current flight is in the future, but mine is closer
+      replaceFlight(acc, foundFlight, flight);
+    }
+
+    return acc;
+  }, []);
 };
 
 /** find the right audio file for a destination */
