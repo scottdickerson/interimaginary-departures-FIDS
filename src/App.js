@@ -11,7 +11,8 @@ import { determineOnTimeStatus } from "./dataUtils";
 
 const DEFAULT_FLIGHT_SEPARATION = 0.25;
 const FLIGHTS_PER_PAGE = 27;
-const BOARDING_TIME = 5;
+// Show Now Boarding for any flight within the next 3.5 minutes
+const BOARDING_TIME = 3.5;
 
 function App() {
   const [currentTime, setCurrentTime] = useState(moment().valueOf());
@@ -24,20 +25,16 @@ function App() {
   }, [currentDay]);
 
   const loadAndSetFlights = (separation = DEFAULT_FLIGHT_SEPARATION) => {
-    fetchFlights().then(
-      (
-        flights // start the flights every 10 minutes
-      ) => {
-        console.log(
-          `flights response ${JSON.stringify(
-            flights.map(flight => omit(flight, ["carrier"])),
-            null,
-            2
-          )}`
-        );
-        setFlights(sortBy(flights, "destination"));
-      }
-    );
+    fetchFlights().then(flights => {
+      console.log(
+        `flights response ${JSON.stringify(
+          flights.map(flight => omit(flight, ["carrier"])),
+          null,
+          2
+        )}`
+      );
+      setFlights(sortBy(flights, "destination"));
+    });
   };
 
   const nextFlight = findIndex(flights, flight => {

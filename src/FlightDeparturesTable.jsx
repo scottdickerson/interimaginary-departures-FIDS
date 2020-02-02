@@ -28,7 +28,7 @@ const FlightDeparturesTable = ({ flights, startGray }) => (
     <tbody>
       {flights.map((flight, index) => (
         <FlightDeparturesTableRow
-          key={`row-${flight.destination}`}
+          key={`row-${flight.destination}-${index}`}
           className={index % 2 === (startGray ? 0 : 1) && styles.gray}
           {...flight}
         />

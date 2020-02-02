@@ -26,7 +26,7 @@ const FlightDeparturesTableRow = ({
     <td className={styles.carrier}>
       <img alt="carrier" src={carrier} />
     </td>
-    <td>{moment(departureTime).format("h:mm A")}</td>
+    <td className={styles.time}>{moment(departureTime).format("h:mm A")}</td>
     <td>{status}</td>
     <td>
       <img alt="gate" src={infinity} />

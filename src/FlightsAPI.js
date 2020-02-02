@@ -14,7 +14,7 @@ export const fetchFlights = minutesToSeparate =>
           ? moment()
               .add(minutesToSeparate * (index + 1), "minutes")
               .valueOf() // fake the minutes}))
-          : flight.departureTime
+          : moment(flight.departureTime).valueOf()
       }))
     );
   });

@@ -1,10 +1,9 @@
 const moment = require("moment");
 const departureOffsets = require("./data/weeklyDepartureOffsets");
 
-function addDepartureTimes(flights) {
-  const today = moment();
-  // set the start time for flights to 6:00 am in the morning
-  today.hour(6);
+function addDepartureTimes(flights, today = moment()) {
+  // set the start time for flights to 5:00 am in the morning
+  today.hour(5);
   today.minute(0);
   today.second(0);
   today.millisecond(0);
@@ -33,11 +32,19 @@ function addDepartureTimes(flights) {
       offsets = departureOffsets.saturday;
       break;
   }
-  const flightsWithDepartureTimes = flights.map((flight, index) => ({
-    ...flight,
-    departureTime: today.clone().add(offsets[index], "milliseconds")
-  }));
-  console.log(JSON.stringify(flightsWithDepartureTimes));
+
+  console.log(
+    `offsetLength: ${offsets.length} and flights length: ${flights.length}`
+  );
+  const flightsWithDepartureTimes = offsets.map((offset, index) => {
+    // Find the matching flight in the full offset array
+    const flight = flights[index % flights.length];
+    return {
+      ...flight,
+      departureTime: today.clone().add(offset, "milliseconds")
+    };
+  });
+  // console.log(JSON.stringify(flightsWithDepartureTimes));
   return flightsWithDepartureTimes;
 }
 
