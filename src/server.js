@@ -21,7 +21,7 @@ function loadFlights(day) {
       )
       // Add departure times to each flight
       .then(flights => {
-        return sortBy(addDepartureTimes(flights, day), "Location Name");
+        return sortBy(addDepartureTimes(flights, day), "departureTime");
       })
       .catch(error => console.log(error))
   );

@@ -9,7 +9,13 @@ const propTypes = {
   destination: PropTypes.string.isRequired,
   carrier: PropTypes.node.isRequired,
   departureTime: PropTypes.number.isRequired,
-  status: PropTypes.oneOf(["Departed", "Boarding", "Canceled", "On Time"])
+  status: PropTypes.oneOf([
+    "Departed",
+    "Boarding",
+    "Canceled",
+    "On Time",
+    "Delayed"
+  ])
 };
 
 const FlightDeparturesTableRow = ({

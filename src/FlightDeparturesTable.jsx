@@ -9,8 +9,13 @@ const propTypes = {
   flights: PropTypes.arrayOf(
     PropTypes.shape({
       destination: PropTypes.string,
-      status: PropTypes.oneOf(["Boarding", "On Time", "Departed", "Canceled"])
-        .isRequired,
+      status: PropTypes.oneOf([
+        "Boarding",
+        "On Time",
+        "Departed",
+        "Canceled",
+        "Delayed"
+      ]).isRequired,
       /** usually a picture that describes the flight carrier */
       carrier: PropTypes.node.isRequired,
       /** timestamp of the departure time */
