@@ -34,7 +34,7 @@ function App() {
           2
         )}`
       );
-      setFlights(filterFlights(sortBy(flights, "destination")));
+      setFlights(filterFlights(sortBy(flights,"destination")));
     });
   };
 
@@ -43,9 +43,10 @@ function App() {
     const interval = setInterval(() => {
       setCurrentTime(moment().valueOf());
       setCurrentDay(moment().dayOfYear());
+      setFlights(filterFlights(flights))
     }, 10000);
     return () => clearInterval(interval);
-  }, [setCurrentTime]);
+  }, [flights, setCurrentTime]);
 
   // shift the flights over by the FLIGHTS_TO_ADVANCE
   useEffect(() => {

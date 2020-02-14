@@ -1,4 +1,4 @@
-import { normalizeFlight } from "./dataUtils";
+import { normalizeFlight, filterFlights } from "./dataUtils";
 
 describe("dataUtils", () => {
   test("normalizeFlight", () => {
@@ -25,4 +25,11 @@ describe("dataUtils", () => {
     expect(normalizedFlight.destination).toBeDefined();
     expect(normalizedFlight.status).toBeDefined();
   });
+  test("filterFlights", ()=> {
+    const mockFlights = [{departureTime: 1, destination: 'Abame'}, {departureTime: 3, destination: 'Abame'}]
+    expect(filterFlights(mockFlights, 0)).toHaveLength(1);
+    expect(filterFlights(mockFlights, 0)[0]).toEqual({departureTime:1,destination:'Abame'});
+    expect(filterFlights(mockFlights, 2)).toHaveLength(1);
+    expect(filterFlights(mockFlights, 2)[0]).toEqual({departureTime:3,destination:'Abame'});
+  })
 });

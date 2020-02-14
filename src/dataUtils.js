@@ -85,7 +85,7 @@ export const normalizeFlight = flight => {
  */
 export const filterFlights = (flights, now = moment().valueOf()) => {
   const replaceFlight = (flights, currentFlight, newFlight) =>
-    flights.slice(
+    flights.splice(
       findIndex(flights, { destination: currentFlight.destination }),
       1,
       newFlight
@@ -99,7 +99,7 @@ export const filterFlights = (flights, now = moment().valueOf()) => {
     } else if (foundFlight.departureTime < now) {
       // if the current flight in the list is in the past
       if (
-        flight.departureTime < now &&
+        flight.departureTime > now &&
         flight.departureTime > foundFlight.departureTime
       ) {
         // if I am also in the past but more recent, I should replace the flight
