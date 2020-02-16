@@ -9,7 +9,7 @@ import logo from "./imgs/InterimaginaryDepartures-logo.png";
 import { determineOnTimeStatus, filterFlights } from "./dataUtils";
 
 const DEFAULT_FLIGHT_SEPARATION = 0.25;
-const FLIGHTS_PER_PAGE = 27;
+const FLIGHTS_PER_PAGE = 29;
 const FLIGHTS_TO_ADVANCE = 12;
 // Show Now Boarding for any flight within the next 3.5 minutes
 const BOARDING_TIME = 3.5;
@@ -58,6 +58,7 @@ function App() {
       ) {
         flights.push(flights.shift()); // take the top element and stick onto the end of the array for 12 flights
       }
+      setFlights(flights);
       setFirstRowIsGray(firstRowIsGray => !firstRowIsGray);
     }, PAGE_DELAY * 1000);
     return () => clearInterval(interval);
