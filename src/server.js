@@ -2,8 +2,8 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const cors = require("cors");
-const moment = require("moment");
 const sortBy = require("lodash").sortBy;
+const isNil = require("lodash").isNil;
 const csvtojson = require("csvtojson");
 const addDepartureTimes = require("./serverDataUtils").addDepartureTimes;
 
@@ -28,12 +28,7 @@ function loadFlights(day) {
 }
 
 app.get("/flights", function(req, res) {
-  const day = moment();
-  if (req.query) {
-    // use the passed day of the week to set the moment
-    day.day(req.query.day);
-  }
-  return loadFlights(day).then(flights => res.send(flights));
+  return loadFlights(req.query && !isNil(req.query.day) ? parseInt(req.query.day) : undefined).then(flights => res.send(flights));
 });
 
 app.get("/", function(req, res) {
