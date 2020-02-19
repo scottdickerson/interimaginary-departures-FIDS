@@ -6,7 +6,7 @@ import omit from "lodash/omit";
 import sortBy from "lodash/sortBy";
 import { fetchFlights } from "./FlightsAPI";
 import logo from "./imgs/InterimaginaryDepartures-logo.png";
-import { determineOnTimeStatus, filterFlights } from "./dataUtils";
+import { determineOnTimeStatus, filterFlights, findNewFlightTimes } from "./dataUtils";
 
 const DEFAULT_FLIGHT_SEPARATION = 0.25;
 const FLIGHTS_PER_PAGE = 29;
@@ -18,6 +18,7 @@ const PAGE_DELAY = 10;
 function App() {
   const [currentTime, setCurrentTime] = useState(moment().valueOf()); // eslint-disable-line
   const [flights, setFlights] = useState([]);
+  const [fullFlights, setFullFlights] = useState([]);
   const [currentDay, setCurrentDay] = useState(moment().dayOfYear());
   const [firstRowIsGray, setFirstRowIsGray] = useState(true);
   // reload the flights data if we switch days
@@ -34,6 +35,8 @@ function App() {
           2
         )}`
       );
+      // store off the full list of flights so I can keep applying the time filter
+      setFullFlights(sortBy(flights,"destination"));
       setFlights(filterFlights(sortBy(flights,"destination")));
     });
   };
@@ -41,12 +44,21 @@ function App() {
   // update the current time every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTime(moment().valueOf());
-      setCurrentDay(moment().dayOfYear());
-      setFlights(filterFlights(flights))
+      const now = moment();
+      setCurrentTime(now.valueOf());
+      setCurrentDay(now.dayOfYear());
+    
     }, 10000);
     return () => clearInterval(interval);
-  }, [flights, setCurrentTime]);
+  }, []);
+
+  // replace the old flight after it has boarded
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFlights(findNewFlightTimes(fullFlights, flights,moment().valueOf()));
+    }, BOARDING_TIME/2*60*1000);
+    return () => clearInterval(interval);
+  }, [flights, fullFlights]);
 
   // shift the flights over by the FLIGHTS_TO_ADVANCE
   useEffect(() => {

@@ -1,6 +1,8 @@
 import moment from "moment";
 import find from "lodash/find";
 import findIndex from "lodash/findIndex";
+import filter from 'lodash/filter';
+import sortBy from 'lodash/sortBy';
 
 import airlinguist from "./imgs/AirLinguist.png";
 import airudite from "./imgs/Airudite.png";
@@ -78,38 +80,54 @@ export const normalizeFlight = flight => {
   };
 };
 
+export const replaceFlight = (flights, currentFlight, newFlight) =>
+    flights.splice(
+      findIndex(flights, { destination: currentFlight.destination }),
+      1,
+      newFlight
+    );
+
+export const shouldFlightBeReplaced = (flight, nextFlight, now) =>{
+  return flight.departureTime !== now && ((flight.departureTime < now && nextFlight.departureTime <= now  && nextFlight.departureTime > flight.departureTime) // show the most recently departed flight
+   || (flight.departureTime < now && nextFlight.departureTime > now) || (flight.departureTime > now && nextFlight.departureTime > now && nextFlight.departureTime < flight.departureTime));
+}    
+
+/** take the full list of flights with duplicate destinations and based on the current time and the current list of flights replace them */
+export const findNewFlightTimes = (fullFlights, flights, now) => {
+  const flightsToReplace = filter(flights, flight=>flight.departureTime < now);
+  console.log(`flightsToReplace: ${JSON.stringify(flightsToReplace)} now: ${now}`);
+  flightsToReplace.forEach(flightToReplace=> {
+    const otherFlightTimes = filter(fullFlights, nextFlight=>nextFlight.destination === flightToReplace.destination && nextFlight.departureTime !== flightToReplace.departureTime);
+    console.log(`otherFlightTimes: ${JSON.stringify(otherFlightTimes)}`);
+    let hasFlightBeenReplaced = false;
+    sortBy(otherFlightTimes,"departureTime").forEach(otherFlight => { // only replace the first found
+    if (!hasFlightBeenReplaced && shouldFlightBeReplaced(flightToReplace, otherFlight, now)) {
+      console.log(`replacing flight with ${JSON.stringify(otherFlight)}`);
+      replaceFlight(flights, flightToReplace, otherFlight)
+      hasFlightBeenReplaced = true;
+    }
+  }
+  )})
+  return flights;
+}
+
 /**
  * Using the current time, find the next flight
  * @param {*} flights
  * @param {*} now, timestamp of right now
  */
 export const filterFlights = (flights, now = moment().valueOf()) => {
-  const replaceFlight = (flights, currentFlight, newFlight) =>
-    flights.splice(
-      findIndex(flights, { destination: currentFlight.destination }),
-      1,
-      newFlight
-    );
+  
   return flights.reduce((acc, flight) => {
     // do we have the flight already in the list
     const foundFlight = find(acc, { destination: flight.destination });
     // if we don't pop it on the list
     if (!foundFlight) {
       acc.push(flight);
-    } else if (foundFlight.departureTime < now) {
-      // if the current flight in the list is in the past
-      if (
-        flight.departureTime > now &&
-        flight.departureTime > foundFlight.departureTime
-      ) {
-        // if I am also in the past but more recent, I should replace the flight
-        replaceFlight(acc, foundFlight, flight);
-      } // otherwise leave the newer flight
-    } else if (flight.departureTime < foundFlight.departureTime) {
+    } else if (shouldFlightBeReplaced(foundFlight, flight, now)) {
       // current flight is in the future, but mine is closer
       replaceFlight(acc, foundFlight, flight);
     }
-
     return acc;
   }, []);
 };
