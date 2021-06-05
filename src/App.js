@@ -1,95 +1,100 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import FlightDeparturesTable from "./FlightDeparturesTable";
-import moment from "moment";
-import omit from "lodash/omit";
-import sortBy from "lodash/sortBy";
-import { fetchFlights } from "./FlightsAPI";
-import logo from "./imgs/InterimaginaryDepartures-logo.png";
-import { determineOnTimeStatus, filterFlights, findNewFlightTimes } from "./dataUtils";
+import React, { useEffect, useState } from 'react'
+import './App.css'
+import FlightDeparturesTable from './FlightDeparturesTable'
+import moment from 'moment'
+import omit from 'lodash/omit'
+import sortBy from 'lodash/sortBy'
+import { fetchFlights } from './FlightsAPI'
+import logo from './imgs/InterimaginaryDepartures-logo.png'
+import {
+    determineOnTimeStatus,
+    filterFlights,
+    findNewFlightTimes,
+} from './dataUtils'
 
-const DEFAULT_FLIGHT_SEPARATION = 0.25;
-const FLIGHTS_PER_PAGE = 29;
-const FLIGHTS_TO_ADVANCE = 12;
+const DEFAULT_FLIGHT_SEPARATION = 0.25
+const FLIGHTS_PER_PAGE = 29
+const FLIGHTS_TO_ADVANCE = 12
 // Show Now Boarding for any flight within the next 3.5 minutes
-const BOARDING_TIME = 3.5;
-const PAGE_DELAY = 10;
+const BOARDING_TIME = 3.5
+const PAGE_DELAY = 10
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(moment().valueOf()); // eslint-disable-line
-  const [flights, setFlights] = useState([]);
-  const [fullFlights, setFullFlights] = useState([]);
-  const [currentDay, setCurrentDay] = useState(moment().dayOfYear());
-  const [firstRowIsGray, setFirstRowIsGray] = useState(true);
-  // reload the flights data if we switch days
-  useEffect(() => {
-    loadAndSetFlights();
-  }, [currentDay]);
+    const [currentTime, setCurrentTime] = useState(moment().valueOf()) // eslint-disable-line
+    const [flights, setFlights] = useState([])
+    const [fullFlights, setFullFlights] = useState([])
+    const [currentDay, setCurrentDay] = useState(moment().dayOfYear())
+    const [firstRowIsGray, setFirstRowIsGray] = useState(true)
+    // reload the flights data if we switch days
+    useEffect(() => {
+        loadAndSetFlights()
+    }, [currentDay])
 
-  const loadAndSetFlights = (separation = DEFAULT_FLIGHT_SEPARATION) => {
-    fetchFlights().then(flights => {
-      console.log(
-        `flights response ${JSON.stringify(
-          flights.map(flight => omit(flight, ["carrier"])),
-          null,
-          2
-        )}`
-      );
-      // store off the full list of flights so I can keep applying the time filter
-      setFullFlights(sortBy(flights,"destination"));
-      setFlights(filterFlights(sortBy(flights,"destination")));
-    });
-  };
+    const loadAndSetFlights = (separation = DEFAULT_FLIGHT_SEPARATION) => {
+        fetchFlights().then((flights) => {
+            console.log(
+                `flights response ${JSON.stringify(
+                    flights.map((flight) => omit(flight, ['carrier'])),
+                    null,
+                    2
+                )}`
+            )
+            // store off the full list of flights so I can keep applying the time filter
+            setFullFlights(sortBy(flights, 'destination'))
+            setFlights(filterFlights(sortBy(flights, 'destination')))
+        })
+    }
 
-  // update the current time every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = moment();
-      setCurrentTime(now.valueOf());
-      setCurrentDay(now.dayOfYear());
-    
-    }, 10000);
-    return () => clearInterval(interval);
-  }, []);
+    // update the current time every 5 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = moment()
+            setCurrentTime(now.valueOf())
+            setCurrentDay(now.dayOfYear())
+        }, 10000)
+        return () => clearInterval(interval)
+    }, [])
 
-  // replace the old flight after it has boarded
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFlights(findNewFlightTimes(fullFlights, flights,moment().valueOf()));
-    }, BOARDING_TIME/2*60*1000);
-    return () => clearInterval(interval);
-  }, [flights, fullFlights]);
+    // replace the old flight after it has boarded
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFlights(
+                findNewFlightTimes(fullFlights, flights, moment().valueOf())
+            )
+        }, (BOARDING_TIME / 2) * 60 * 1000)
+        return () => clearInterval(interval)
+    }, [flights, fullFlights])
 
-  // shift the flights over by the FLIGHTS_TO_ADVANCE
-  useEffect(() => {
-    const interval = setInterval(() => {
-      for (
-        let flightsToAdvance = 0;
-        flightsToAdvance < FLIGHTS_TO_ADVANCE;
-        flightsToAdvance++
-      ) {
-        flights.push(flights.shift()); // take the top element and stick onto the end of the array for 12 flights
-      }
-      setFlights(flights);
-      setFirstRowIsGray(firstRowIsGray => !firstRowIsGray);
-    }, PAGE_DELAY * 1000);
-    return () => clearInterval(interval);
-  }, [flights]);
+    // shift the flights over by the FLIGHTS_TO_ADVANCE
+    useEffect(() => {
+        const interval = setInterval(() => {
+            for (
+                let flightsToAdvance = 0;
+                flightsToAdvance < FLIGHTS_TO_ADVANCE;
+                flightsToAdvance++
+            ) {
+                flights.push(flights.shift()) // take the top element and stick onto the end of the array for 12 flights
+            }
+            setFlights(flights)
+            setFirstRowIsGray((firstRowIsGray) => !firstRowIsGray)
+        }, PAGE_DELAY * 1000)
+        return () => clearInterval(interval)
+    }, [flights])
 
-  return (
-    <div className="app">
-      <div className="app-title">
-        <img alt="Interimaginary Departures" src={logo} />
-      </div>
-      <FlightDeparturesTable
-        startGray={firstRowIsGray}
-        flights={flights.slice(0, FLIGHTS_PER_PAGE).map(flight => ({
-          ...flight,
-          status: determineOnTimeStatus(flight, BOARDING_TIME)
-        }))}
-      />
-    </div>
-  );
+    return (
+        <div className="app">
+            <div className="app-title">
+                <img alt="Interimaginary Departures" src={logo} />
+            </div>
+            <FlightDeparturesTable
+                startGray={firstRowIsGray}
+                flights={flights.slice(0, FLIGHTS_PER_PAGE).map((flight) => ({
+                    ...flight,
+                    status: determineOnTimeStatus(flight, BOARDING_TIME),
+                }))}
+            />
+        </div>
+    )
 }
 
-export default App;
+export default App

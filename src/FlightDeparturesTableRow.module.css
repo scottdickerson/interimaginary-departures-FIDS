@@ -1,21 +1,21 @@
 .carrier img {
-  width: 320px;
-  vertical-align: middle;
+    width: 320px;
+    vertical-align: middle;
 }
 
 .row td:first-child {
-  padding-left: 12rem;
+    padding-left: 12rem;
 }
 .row td:last-child {
-  padding-right: 8rem;
+    padding-right: 8rem;
 }
 
 .row td {
-  text-overflow: ellipsis;
-  overflow-x: hidden;
-  white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
 }
-.row [data-id="destination"] {
-  width: 600px;
-  max-width: 600px;
+.row [data-id='destination'] {
+    width: 600px;
+    max-width: 600px;
 }

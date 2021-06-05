@@ -1,61 +1,63 @@
 {
-  "name": "interimaginary-departures-gate-monitor",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "cors": "^2.8.5",
-    "csvtojson": "^2.0.10",
-    "express": "^4.17.1",
-    "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0",
-    "react-sound": "^1.2.0"
-  },
-  "scripts": {
-    "startClient": "react-scripts start",
-    "startServer": "nodemon src/server.js",
-    "start": "concurrently --kill-others-on-fail \"yarn startClient\" \"yarn startServer\"",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "moduleNameMapper": {
-      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/src/mocks/fileMock.js"
+    "name": "interimaginary-departures-gate-monitor",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "cors": "^2.8.5",
+        "csvtojson": "^2.0.10",
+        "express": "^4.17.1",
+        "lodash": "^4.17.15",
+        "moment": "^2.24.0",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "react-scripts": "3.3.0",
+        "react-sound": "^1.2.0"
+    },
+    "scripts": {
+        "startClient": "react-scripts start",
+        "startServer": "nodemon src/server.js",
+        "start": "concurrently --kill-others-on-fail \"yarn startClient\" \"yarn startServer\"",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "storybook": "start-storybook -p 9009 -s public",
+        "build-storybook": "build-storybook -s public",
+        "prettier": "prettier --write **"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "jest": {
+        "testEnvironment": "node",
+        "moduleNameMapper": {
+            "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+            "\\.(css|less)$": "<rootDir>/src/mocks/fileMock.js"
+        }
+    },
+    "proxy": "http://localhost:8080",
+    "devDependencies": {
+        "@storybook/addon-actions": "^5.2.8",
+        "@storybook/addon-knobs": "^5.2.8",
+        "@storybook/addon-links": "^5.2.8",
+        "@storybook/addons": "^5.2.8",
+        "@storybook/react": "^5.2.8",
+        "concurrently": "^5.0.1",
+        "faker": "^4.1.0",
+        "prettier": "^2.3.1"
     }
-  },
-  "proxy": "http://localhost:8080",
-  "devDependencies": {
-    "@storybook/addon-actions": "^5.2.8",
-    "@storybook/addon-knobs": "^5.2.8",
-    "@storybook/addon-links": "^5.2.8",
-    "@storybook/addons": "^5.2.8",
-    "@storybook/react": "^5.2.8",
-    "concurrently": "^5.0.1",
-    "faker": "^4.1.0"
-  }
 }
