@@ -17,6 +17,7 @@ const FLIGHTS_PER_PAGE = 29
 const FLIGHTS_TO_ADVANCE = 12
 // Show Now Boarding for any flight within the next 3.5 minutes
 const BOARDING_TIME = 3.5
+// Number of seconds to delay before flipping the page
 const PAGE_DELAY = 10
 
 function App() {
@@ -45,7 +46,7 @@ function App() {
         })
     }
 
-    // update the current time every 5 seconds
+    // update the current time every 5 seconds, TODO: why can't I do this with isMemo on on the delay useEffect render
     useEffect(() => {
         const interval = setInterval(() => {
             const now = moment()
@@ -73,7 +74,7 @@ function App() {
                 flightsToAdvance < FLIGHTS_TO_ADVANCE;
                 flightsToAdvance++
             ) {
-                flights.push(flights.shift()) // take the top element and stick onto the end of the array for 12 flights
+                flights.push(flights.shift()) // take the top element and stick onto the end of the array for 12 flights TODO: probably shouldn't mutate the existing state
             }
             setFlights(flights)
             setFirstRowIsGray((firstRowIsGray) => !firstRowIsGray)

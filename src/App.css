@@ -135,6 +135,13 @@ body .app {
     overflow-y: hidden;
     height: 100vh;
 }
+
+@media only screen and (max-width: 1680px) {
+    body .app {
+        overflow-y: auto;
+    }
+}
+
 .app table {
     margin-top: 2rem;
     width: 100%;
@@ -147,7 +154,21 @@ body .app {
     align-items: flex-end;
     justify-content: center;
 }
+
+@media only screen and (max-width: 1680px) {
+    .app-title {
+        min-height: 20rem;
+        max-height: 20rem;
+    }
+}
 .app-title img {
     margin-bottom: 4rem;
     height: 218px;
+}
+
+@media only screen and (max-width: 1680px) {
+    .app-title img {
+        width: 90%;
+        height: 10%;
+    }
 }

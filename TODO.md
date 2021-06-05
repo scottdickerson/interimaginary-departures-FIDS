@@ -26,3 +26,7 @@ Another round of edits
 
 Due Date September 1
 Load onto hardware, ticket machine etc
+
+## Design document
+
+<https://www.dropbox.com/s/qnp9p5wlu7cmfbx/FIDS%2010%20sec%20video%202.13.20.mov?dl=0>
