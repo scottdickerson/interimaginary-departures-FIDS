@@ -7,8 +7,17 @@ yarn global add react-scripts
 yarn global add nodemon
 ```
 
-From the project directory run
+Testing the app locally outside of docker from the project directory run
 `yarn install`
+`yarn start`
+
+Use this URL to view the app locally:
+<http://127.0.0.1:8080>
+
+## Running in your local docker
+
+`docker build -t interimaginary:FIDS .`
+`docker run interimaginary:FIDS`
 
 ## Deploying to heroku (deploys the static app not the container)
 

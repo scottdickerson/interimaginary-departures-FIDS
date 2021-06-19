@@ -19,8 +19,8 @@
         "react-sound": "^1.2.0"
     },
     "scripts": {
-        "startClient": "react-scripts start",
-        "startServer": "nodemon src/server.js",
+        "startClient": "PORT=8081 react-scripts start",
+        "startServer": "PORT=8080 nodemon src/server.js",
         "start": "concurrently --kill-others-on-fail \"yarn startClient\" \"yarn startServer\"",
         "build": "react-scripts build",
         "test": "react-scripts test",
