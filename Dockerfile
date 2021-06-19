@@ -5,5 +5,5 @@ RUN yarn
 COPY . ./
 RUN yarn build
 
-EXPOSE 8080 8081
-CMD ["yarn", "start"]
+EXPOSE 5000
+CMD ["yarn", "start:prod"]

@@ -2,9 +2,9 @@ import { normalizeFlight } from './dataUtils'
 import moment from 'moment'
 
 export const fetchFlights = (minutesToSeparate) =>
-    fetch('http://127.0.0.1:8080/flights', {
+    fetch(`${process.env.REACT_APP_SERVER_API_URL}/flights`, {
         method: 'get',
-        url: `http://127.0.0.1:8080`,
+        url: process.env.REACT_APP_SERVER_API_URL,
     }).then((response) => {
         console.log('fetch response')
         return response.json().then((flights) =>

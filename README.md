@@ -9,7 +9,7 @@ yarn global add nodemon
 
 Testing the app locally outside of docker from the project directory run
 `yarn install`
-`yarn start`
+`REACT_APP_SERVER_API_URL=<wherever your api is listening, by default should be http://localhost:8080> yarn start`
 
 Use this URL to view the app locally:
 <http://127.0.0.1:8080>
@@ -17,12 +17,13 @@ Use this URL to view the app locally:
 ## Running in your local docker
 
 `docker build -t interimaginary:FIDS .`
-`docker run interimaginary:FIDS`
+`docker run -p 8081:5000 interimaginary:FIDS`
 
 ## Deploying to heroku (deploys the static app not the container)
 
 `heroku login`
 `git remote add heroku https://git.heroku.com/radiant-spire-33199.git`
+`heroku config:set REACT_APP_SERVER_API_URL=https://still-fjord-81783.herokuapp.com/`
 `git push heroku main`
 `heroku open`
 
