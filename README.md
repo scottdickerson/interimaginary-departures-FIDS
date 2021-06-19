@@ -23,7 +23,7 @@ Use this URL to view the app locally:
 
 `heroku login`
 `git remote add heroku https://git.heroku.com/radiant-spire-33199.git`
-`heroku config:set REACT_APP_SERVER_API_URL=https://still-fjord-81783.herokuapp.com/`
+`heroku config:set REACT_APP_SERVER_API_URL=https://still-fjord-81783.herokuapp.com`
 `git push heroku main`
 `heroku open`
 
