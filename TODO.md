@@ -26,7 +26,10 @@ Another round of edits
 
 Due Date September 1
 Load onto hardware, ticket machine etc
+Turn on Daylight Saving Time
 
 ## Design document
 
-<https://www.dropbox.com/s/qnp9p5wlu7cmfbx/FIDS%2010%20sec%20video%202.13.20.mov?dl=0>
+    <https://www.dropbox.com/s/qnp9p5wlu7cmfbx/FIDS%2010%20sec%20video%202.13.20.mov?dl=0>
+
+1037x593 is the real ratio of the monitor

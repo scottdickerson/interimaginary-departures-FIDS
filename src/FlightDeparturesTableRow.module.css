@@ -3,7 +3,7 @@
     vertical-align: middle;
 }
 
-@media only screen and (max-width: 1680px) {
+@media only screen and (max-width: 1680px) and (orientation: landscape) {
     img {
         width: 3.5vw;
         transform: translateY(0.5vh);
@@ -27,7 +27,7 @@
     white-space: nowrap;
 }
 
-@media only screen and (max-width: 1680px) {
+@media only screen and (max-width: 1680px) and (orientation: landscape) {
     .row td {
         padding-right: 1rem;
     }

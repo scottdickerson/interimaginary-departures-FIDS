@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-@media only screen and (max-width: 1680px) {
+@media only screen and (max-width: 1680px) and (orientation: landscape) {
     .table {
         font-size: 1.5vw;
         line-height: 40%;
