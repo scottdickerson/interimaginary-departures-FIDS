@@ -21,7 +21,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "start:prod": "serve /build",
+        "start:prod": "serve -s build",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
@@ -51,7 +51,6 @@
             "\\.(css|less)$": "<rootDir>/src/mocks/fileMock.js"
         }
     },
-    "proxy": "http://localhost:8080",
     "devDependencies": {
         "@storybook/addon-actions": "^5.2.8",
         "@storybook/addon-knobs": "^5.2.8",
