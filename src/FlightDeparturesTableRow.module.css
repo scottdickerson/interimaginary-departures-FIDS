@@ -3,7 +3,7 @@
     vertical-align: middle;
 }
 
-@media only screen and (max-width: 1680px) and (orientation: landscape) {
+@media only screen and (max-width: 1680px) {
     img {
         width: 3.5vw;
         transform: translateY(0.5vh);
@@ -17,8 +17,19 @@
 .row td:first-child {
     padding-left: 12rem;
 }
+@media only screen and (max-width: 1680px) {
+    .row td:first-child {
+        padding-left: 10%;
+    }
+}
 .row td:last-child {
     padding-right: 8rem;
+}
+
+@media only screen and (max-width: 1680px) {
+    .row td:last-child {
+        padding-right: 10%;
+    }
 }
 
 .row td {
@@ -27,7 +38,7 @@
     white-space: nowrap;
 }
 
-@media only screen and (max-width: 1680px) and (orientation: landscape) {
+@media only screen and (max-width: 1680px) {
     .row td {
         padding-right: 1rem;
     }
@@ -41,4 +52,11 @@
 .row [data-id='destination'] {
     width: 600px;
     max-width: 600px;
+}
+
+@media only screen and (max-width: 1680px) {
+    .row [data-id='destination'] {
+        width: 30%;
+        max-width: 30%;
+    }
 }

@@ -136,7 +136,7 @@ body .app {
     height: 100vh;
 }
 
-@media only screen and (max-width: 1680px) and (orientation: landscape) {
+@media only screen and (max-width: 1680px) {
     body .app {
         overflow-y: auto;
     }
@@ -147,6 +147,12 @@ body .app {
     width: 100%;
 }
 
+@media only screen and (max-width: 1300px) {
+    .app table {
+        margin-top: unset;
+    }
+}
+
 .app-title {
     background-color: #8f1d3b;
     min-height: 426px;
@@ -155,9 +161,21 @@ body .app {
     justify-content: center;
 }
 
-@media only screen and (max-width: 1680px) and (orientation: landscape) {
+@media only screen and (max-width: 1680px) {
     .app-title {
         min-height: 20rem;
+        max-height: 20rem;
+    }
+}
+@media only screen and (max-width: 1300px) {
+    .app-title {
+        min-height: 15rem;
+        max-height: 20rem;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    .app-title {
+        min-height: 10rem;
         max-height: 20rem;
     }
 }
@@ -166,7 +184,7 @@ body .app {
     height: 218px;
 }
 
-@media only screen and (max-width: 1680px) and (orientation: landscape) {
+@media only screen and (max-width: 1680px) {
     .app-title img {
         width: 90%;
         height: 10%;
