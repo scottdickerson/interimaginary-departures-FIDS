@@ -11,6 +11,7 @@ Chop the sound files
 Scott:
 Make the UI responsive to allow to any browser size
 Post to server for internal check
+Add error message on the UI and protect it when it can't connect to the Flights API
 Fix any edits the client may already have sent
 Fix the bunny animation on the ticket printer
 Add sound files to departure screen
