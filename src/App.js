@@ -28,11 +28,11 @@ function App() {
     const [firstRowIsGray, setFirstRowIsGray] = useState(true)
     // reload the flights data if we switch days
     useEffect(() => {
-        loadAndSetFlights()
+        loadAndSetFlights(currentDay)
     }, [currentDay])
 
-    const loadAndSetFlights = (separation = DEFAULT_FLIGHT_SEPARATION) => {
-        fetchFlights().then((flights) => {
+    const loadAndSetFlights = (day) => {
+        fetchFlights(day).then((flights) => {
             console.log(
                 `flights response ${JSON.stringify(
                     flights.map((flight) => omit(flight, ['carrier'])),

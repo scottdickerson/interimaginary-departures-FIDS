@@ -1,11 +1,14 @@
 import { normalizeFlight } from './dataUtils'
 import moment from 'moment'
+import qs from 'qs'
 
-export const fetchFlights = (minutesToSeparate) =>
+const tzOffset = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+export const fetchFlights = (day) =>
     fetch(
         `${
             process.env.REACT_APP_SERVER_API_URL || 'http://127.0.0.1:8080'
-        }/flights`,
+        }/flights?${qs.stringify({ day, tzOffset })}`,
         {
             method: 'get',
             url:
@@ -14,13 +17,9 @@ export const fetchFlights = (minutesToSeparate) =>
     ).then((response) => {
         console.log('fetch response')
         return response.json().then((flights) =>
-            flights.map((flight, index) => ({
+            flights.map((flight) => ({
                 ...normalizeFlight(flight),
-                departureTime: minutesToSeparate
-                    ? moment()
-                          .add(minutesToSeparate * (index + 1), 'minutes')
-                          .valueOf() // fake the minutes}))
-                    : moment(flight.departureTime).valueOf(),
+                departureTime: moment(flight.departureTime).valueOf(),
             }))
         )
     })
