@@ -12,7 +12,6 @@ import {
     findNewFlightTimes,
 } from './dataUtils'
 
-const DEFAULT_FLIGHT_SEPARATION = 0.25
 const FLIGHTS_PER_PAGE = 29
 const FLIGHTS_TO_ADVANCE = 12
 // Show Now Boarding for any flight within the next 3.5 minutes
@@ -24,7 +23,7 @@ function App() {
     const [currentTime, setCurrentTime] = useState(moment().valueOf()) // eslint-disable-line
     const [flights, setFlights] = useState([])
     const [fullFlights, setFullFlights] = useState([])
-    const [currentDay, setCurrentDay] = useState(moment().dayOfYear())
+    const [currentDay, setCurrentDay] = useState(moment().day())
     const [firstRowIsGray, setFirstRowIsGray] = useState(true)
     // reload the flights data if we switch days
     useEffect(() => {
@@ -51,7 +50,7 @@ function App() {
         const interval = setInterval(() => {
             const now = moment()
             setCurrentTime(now.valueOf())
-            setCurrentDay(now.dayOfYear())
+            setCurrentDay(now.day())
         }, 10000)
         return () => clearInterval(interval)
     }, [])
