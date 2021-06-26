@@ -13,7 +13,7 @@ import {
     determineOnTimeStatus,
     filterFlights,
     findNewFlightTimes,
-} from './dataUtils'
+} from './api/dataUtils'
 
 const FLIGHTS_PER_PAGE = 29
 const FLIGHTS_TO_ADVANCE = 12

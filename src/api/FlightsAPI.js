@@ -1,4 +1,4 @@
-import { normalizeFlight } from '../dataUtils'
+import { normalizeFlight } from './dataUtils'
 import qs from 'qs'
 
 const tzOffset = Intl.DateTimeFormat().resolvedOptions().timeZone
