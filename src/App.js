@@ -24,7 +24,7 @@ const PAGE_DELAY = 10
 
 const App = () => {
     const reduxFlights = useSelector(
-        (state) => sortBy(state?.flights?.data, 'destination'),
+        (state) => sortBy(state?.flights?.data, 'destination'), // could actually store this way in the reducer so I don't need to memoize
         isEqual
     )
     const dispatch = useDispatch()
