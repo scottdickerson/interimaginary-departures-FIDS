@@ -79,7 +79,7 @@ export const normalizeFlight = (flight) => {
             { name: flight['Category 3'], value: flight['Narrative 3'] },
             { name: flight['Category 4'], value: flight['Narrative 4'] },
         ],
-        departureTime: flight.departureTime,
+        departureTime: moment(flight.departureTime).valueOf(),
     }
 }
 

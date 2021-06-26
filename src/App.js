@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import FlightDeparturesTable from './FlightDeparturesTable'
 import moment from 'moment'
-import omit from 'lodash/omit'
+// import omit from 'lodash/omit'
 import sortBy from 'lodash/sortBy'
-import { fetchFlights } from './FlightsAPI'
+// import { fetchFlights } from './api/FlightsAPI'
 import logo from './imgs/InterimaginaryDepartures-logo.png'
+import isEqual from 'lodash/isEqual'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchAllFlights } from './api/FlightsActions'
 import {
     determineOnTimeStatus,
     filterFlights,
@@ -19,31 +22,26 @@ const BOARDING_TIME = 3.5
 // Number of seconds to delay before flipping the page
 const PAGE_DELAY = 10
 
-function App() {
+const App = () => {
+    const reduxFlights = useSelector(
+        (state) => sortBy(state?.flights?.data, 'destination'),
+        isEqual
+    )
+    const dispatch = useDispatch()
+
     const [currentTime, setCurrentTime] = useState(moment().valueOf()) // eslint-disable-line
     const [flights, setFlights] = useState([])
-    const [fullFlights, setFullFlights] = useState([])
     const [currentDay, setCurrentDay] = useState(moment().day())
     const [firstRowIsGray, setFirstRowIsGray] = useState(true)
     // reload the flights data if we switch days
     useEffect(() => {
-        loadAndSetFlights(currentDay)
-    }, [currentDay])
+        dispatch(fetchAllFlights(currentDay))
+    }, [currentDay, dispatch])
 
-    const loadAndSetFlights = (day) => {
-        fetchFlights(day).then((flights) => {
-            console.log(
-                `flights response ${JSON.stringify(
-                    flights.map((flight) => omit(flight, ['carrier'])),
-                    null,
-                    2
-                )}`
-            )
-            // store off the full list of flights so I can keep applying the time filter
-            setFullFlights(sortBy(flights, 'destination'))
-            setFlights(filterFlights(sortBy(flights, 'destination')))
-        })
-    }
+    useEffect(() => {
+        // apply a time filter to flights
+        setFlights(filterFlights(sortBy(reduxFlights, 'destination')))
+    }, [reduxFlights])
 
     // update the current time every 5 seconds, TODO: why can't I do this with isMemo on on the delay useEffect render
     useEffect(() => {
@@ -58,14 +56,15 @@ function App() {
     // replace the old flight after it has boarded
     useEffect(() => {
         const interval = setInterval(() => {
-            setFlights(
-                findNewFlightTimes(fullFlights, flights, moment().valueOf())
+            setFlights((flights) =>
+                findNewFlightTimes(reduxFlights, flights, moment().valueOf())
             )
         }, (BOARDING_TIME / 2) * 60 * 1000)
         return () => clearInterval(interval)
-    }, [flights, fullFlights])
+    }, [reduxFlights])
 
     // shift the flights over by the FLIGHTS_TO_ADVANCE
+    // I couldn't just slice on the starting point of the array because it doesn't wrap around infinitely
     useEffect(() => {
         const interval = setInterval(() => {
             for (
