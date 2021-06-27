@@ -9,13 +9,16 @@ Load it into the device and test it
 Chop the sound files
 
 Scott:
-Make the UI responsive to allow to any browser size
-Post to server for internal check
 Add error message on the UI and protect it when it can't connect to the Flights API
+Remove muzak
+Debug why the sounds are not playing in the monitor
 Fix any edits the client may already have sent
 Fix the bunny animation on the ticket printer
 Add sound files to departure screen
 Build test version that runs every minute
+
+Kiosk:
+lots of style changes at 800x600, can I force it always to 800x500
 
 ## Round 2
 

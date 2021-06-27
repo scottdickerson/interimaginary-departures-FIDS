@@ -1,4 +1,8 @@
-import { normalizeFlight, filterFlights, findNewFlightTimes } from './dataUtils'
+import {
+    normalizeFlight,
+    filterFlights,
+    findNewFlightTimes,
+} from '../dataUtils'
 
 describe('dataUtils', () => {
     test('normalizeFlight', () => {

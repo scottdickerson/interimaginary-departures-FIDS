@@ -1,5 +1,4 @@
 import { normalizeFlight } from './dataUtils'
-import moment from 'moment'
 import qs from 'qs'
 
 const tzOffset = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -16,10 +15,12 @@ export const fetchFlights = (day) =>
         }
     ).then((response) => {
         console.log('fetch response')
-        return response.json().then((flights) =>
-            flights.map((flight) => ({
-                ...normalizeFlight(flight),
-                departureTime: moment(flight.departureTime).valueOf(),
-            }))
-        )
+        if (response.ok) {
+            return response
+                .json()
+                .then((flights) =>
+                    flights.map((flight) => normalizeFlight(flight))
+                )
+        }
+        throw new Error(`Error fetching flights: ${response.body}`)
     })
