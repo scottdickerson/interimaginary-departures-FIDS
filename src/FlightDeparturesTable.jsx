@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import FlightDeparturesTableHeader from './FlightDeparturesTableHeader'
 import FlightDeparturesTableRow from './FlightDeparturesTableRow'
 import styles from './FlightDeparturesTable.module.css'
+import { useSelector } from 'react-redux'
 
 const propTypes = {
     flights: PropTypes.arrayOf(
@@ -25,8 +26,18 @@ const propTypes = {
     startGray: PropTypes.bool,
 }
 
+const FetchingFlights = () => (
+    <div className={styles.fetching}>Fetching Flights...</div>
+)
+const FetchingFlightError = () => (
+    <div className={styles.error}>Error Fetching Flights</div>
+)
+
 const FlightDeparturesTable = ({ flights, startGray }) => {
-    return (
+    const isFetching = useSelector((state) => state.flights.isFetching)
+    const fetchingError = useSelector((state) => state.flights.error)
+
+    return !isFetching && !fetchingError ? (
         <table className={styles.table}>
             <thead>
                 <FlightDeparturesTableHeader />
@@ -43,7 +54,11 @@ const FlightDeparturesTable = ({ flights, startGray }) => {
                 ))}
             </tbody>
         </table>
-    )
+    ) : isFetching ? (
+        <FetchingFlights />
+    ) : fetchingError ? (
+        <FetchingFlightError />
+    ) : null
 }
 
 FlightDeparturesTable.propTypes = propTypes
