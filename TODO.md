@@ -9,7 +9,6 @@ Load it into the device and test it
 Chop the sound files
 
 Scott:
-Add error message on the UI and protect it when it can't connect to the Flights API
 Fix the real bunny animation on the ticket printer
 Add sound files to departure monitor, replace muzak
 
