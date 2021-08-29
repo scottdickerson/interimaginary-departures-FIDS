@@ -13,10 +13,10 @@
     }
 }
 .header th:first-child {
-    padding-left: 100px;
-    width:536px;
-    min-width:536px;
-    max-width:536px;
+    padding-left: 103px;
+    width:550px;
+    min-width:550px;
+    max-width:550px;
 }
 .header th:nth-child(2) {
     width: 470px;
