@@ -67,10 +67,7 @@ const audioPaths = {
  */
 export const normalizeFlight = (flight) => {
     return {
-        destination:
-            flight['Location Name'] !== 'Yoknapatawpha County'
-                ? flight['Location Name']
-                : 'Yoknapatawpha Cnty', // special truncation case for Yokna (only for FIDS)
+        destination: flight['Location Name'],
         status: flight['FIDS STATUS'],
         carrier: imagepaths[flight['Airline'].replace(/ .*/, '').toLowerCase()],
         details: [
