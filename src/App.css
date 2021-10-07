@@ -147,11 +147,20 @@ body .app {
     width: 100%;
 }
 
+.app-title {
+    background-color: #8f1d3b;
+    min-height: 426px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+
+
 .app-title img {
-    margin-bottom: 4rem;
-    margin-top: 84px;
     height: 218px;
-    margin-left: 103px;
+    margin-bottom:1.5rem;
+    margin-left: -15px
 }
 
 @media only screen and (max-width: 1300px) {
@@ -160,10 +169,6 @@ body .app {
     }
 }
 
-.app-title {
-    background-color: #8f1d3b;
-    min-height: 465px;
-}
 
 @media only screen and (max-width: 1680px) {
     .app-title {
