@@ -36,7 +36,7 @@ const FlightDeparturesTableRow = ({
             {moment(departureTime).format('h:mm A')}
         </td>
         <td>{status}</td>
-        <td>
+        <td data-id="gate">
             <img alt="gate" src={infinity} />
         </td>
     </tr>

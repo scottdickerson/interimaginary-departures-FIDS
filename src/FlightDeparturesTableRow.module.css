@@ -3,6 +3,10 @@
     vertical-align: middle;
 }
 
+.row [data-id='gate'] img {
+    transform: translateY(14px);
+}
+
 @media only screen and (max-width: 1680px) {
     img {
         width: 3.5vw;
