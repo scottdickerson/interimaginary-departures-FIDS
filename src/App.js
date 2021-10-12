@@ -5,7 +5,7 @@ import moment from 'moment'
 // import omit from 'lodash/omit'
 import sortBy from 'lodash/sortBy'
 // import { fetchFlights } from './api/FlightsAPI'
-import logo from './imgs/InterimaginaryDepartures-logo.png'
+// import logo from './imgs/InterimaginaryDepartures-logo.png'
 import isEqual from 'lodash/isEqual'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchAllFlights } from './api/FlightsActions'
@@ -22,7 +22,6 @@ const BOARDING_TIME = 3.5
 // Number of seconds to delay before flipping the page
 const PAGE_DELAY = 6
 // const PAGE_DELAY = 1000000
-
 
 const App = () => {
     const reduxFlights = useSelector(
@@ -85,7 +84,9 @@ const App = () => {
     return (
         <div className="app">
             <div className="app-title">
-                <img alt="Interimaginary Departures" src={logo} />
+                {/*<img alt="Interimaginary Departures" src={logo} />*/}
+
+                <h2>Interimaginary Departures</h2>
             </div>
             <FlightDeparturesTable
                 startGray={firstRowIsGray}
