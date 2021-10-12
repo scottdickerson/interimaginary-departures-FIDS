@@ -20,7 +20,7 @@ const FLIGHTS_TO_ADVANCE = 6
 // Show Now Boarding for any flight within the next 3.5 minutes
 const BOARDING_TIME = 3.5
 // Number of seconds to delay before flipping the page
-const PAGE_DELAY = 6
+const PAGE_DELAY = 15
 // const PAGE_DELAY = 1000000
 
 const App = () => {
