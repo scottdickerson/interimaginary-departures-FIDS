@@ -1,0 +1,45 @@
+.header {
+    font-family: HelveticaNeueRegular;
+    font-size: 43px;
+    letter-spacing: 0.86px;
+    color: #808080;
+    text-align: left;
+}
+
+@media only screen and (max-width: 1680px) {
+    .header {
+        font-size: inherit;
+        line-height: 3rem;
+    }
+}
+.header th:first-child {
+    padding-left: 103px;
+    width:550px;
+    min-width:550px;
+    max-width:550px;
+}
+.header th:nth-child(2) {
+    width: 470px;
+    min-width: 470px;
+    max-width: 470px;
+}
+.header th:nth-child(3) {
+    width: 412px;
+    min-width: 412px;
+    max-width: 412px;
+}
+.header th:nth-child(4) {
+    width: 432px;
+    min-width: 432px;
+    max-width: 432px;
+}
+@media only screen and (max-width: 1680px) {
+    .header th:first-child {
+        padding-left: 10%;
+    }
+}
+@media only screen and (max-width: 1680px) {
+    .header th:last-child {
+        padding-right: 10%;
+    }
+}

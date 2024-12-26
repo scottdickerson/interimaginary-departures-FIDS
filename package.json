@@ -1,0 +1,67 @@
+{
+    "name": "interimaginary-departures-gate-monitor",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "classnames": "^2.3.1",
+        "concurrently": "^6.2.0",
+        "cors": "^2.8.5",
+        "csvtojson": "^2.0.10",
+        "express": "^4.17.1",
+        "lodash": "^4.17.15",
+        "moment": "^2.24.0",
+        "nodemon": "^2.0.7",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "react-redux": "^7.2.4",
+        "react-scripts": "5.0.1",
+        "react-sound": "^1.2.0",
+        "redux-thunk": "^2.3.0",
+        "serve": "^12.0.0"
+    },
+    "scripts": {
+        "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+        "start:prod": "serve -s build",
+        "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "storybook": "start-storybook -p 9009 -s public",
+        "build-storybook": "build-storybook -s public",
+        "prettier": "prettier --write **"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "jest": {
+        "moduleNameMapper": {
+            "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js"
+        }
+    },
+    "devDependencies": {
+        "@storybook/addon-actions": "^5.2.8",
+        "@storybook/addon-knobs": "^5.2.8",
+        "@storybook/addon-links": "^5.2.8",
+        "@storybook/addons": "^5.2.8",
+        "@storybook/react": "^5.2.8",
+        "cross-env": "^7.0.3",
+        "faker": "^4.1.0",
+        "fetch-mock": "^9.11.0",
+        "prettier": "^2.3.1",
+        "redux-mock-store": "^1.5.4"
+    }
+}

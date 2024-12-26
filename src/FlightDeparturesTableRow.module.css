@@ -1,0 +1,60 @@
+.carrier img {
+    width: 232px;
+    vertical-align: middle;
+}
+
+.row [data-id='gate'] img {
+    transform: translateY(14px);
+}
+
+@media only screen and (max-width: 1680px) {
+    img {
+        width: 3.5vw;
+        transform: translateY(0.5vh);
+    }
+    .carrier img {
+        width: 11vw;
+        transform: translateY(-0.5vh);
+    }
+}
+
+.row td:first-child {
+    padding-left: 103px
+}
+
+
+@media only screen and (max-width: 1680px) {
+    .row td:first-child {
+        padding-left: 10%;
+    }
+}
+
+@media only screen and (max-width: 1680px) {
+    .row td:last-child {
+        padding-right: 10%;
+    }
+}
+
+.row td {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 1680px) {
+    .row td {
+        padding-right: 1rem;
+    }
+    .row td:nth-child(2) {
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
+        transform: translateY(0.25rem);
+    }
+}
+
+@media only screen and (max-width: 1680px) {
+    .row [data-id='destination'] {
+        width: 30%;
+        max-width: 30%;
+    }
+}
