@@ -1,7 +1,4 @@
 import moment from 'moment'
-import find from 'lodash/find'
-import findIndex from 'lodash/findIndex'
-import filter from 'lodash/filter'
 import sortBy from 'lodash/sortBy'
 
 import airlinguist from '../imgs/AirLinguist.png'
@@ -80,79 +77,65 @@ export const normalizeFlight = (flight) => {
     }
 }
 
-export const replaceFlight = (flights, currentFlight, newFlight) =>
-    flights.splice(
-        findIndex(flights, { destination: currentFlight.destination }),
-        1,
-        newFlight
-    )
-
 export const shouldFlightBeReplaced = (flight, nextFlight, now) => {
     return (
         flight.departureTime !== now &&
-        ((flight.departureTime < now &&
+        ((flight.departureTime < now && // both flights have already left, use the later one
             nextFlight.departureTime <= now &&
-            nextFlight.departureTime > flight.departureTime) || // show the most recently departed flight
+            nextFlight.departureTime > flight.departureTime) ||
             (flight.departureTime < now && nextFlight.departureTime > now) ||
-            (flight.departureTime > now &&
+            (flight.departureTime > now && // flight is in the future, but next flight is closer to the current time, then next flight should be used
                 nextFlight.departureTime > now &&
                 nextFlight.departureTime < flight.departureTime))
     )
 }
 
-/** take the full list of flights with duplicate destinations and based on the current time and the current list of flights replace them */
-export const findNewFlightTimes = (fullFlights, flights, now) => {
-    const flightsToReplace = filter(
-        flights,
-        (flight) => flight.departureTime < now
-    )
-    console.log(
-        `flightsToReplace: ${JSON.stringify(flightsToReplace)} now: ${now}`
-    )
-    flightsToReplace.forEach((flightToReplace) => {
-        const otherFlightTimes = filter(
-            fullFlights,
-            (nextFlight) =>
-                nextFlight.destination === flightToReplace.destination &&
-                nextFlight.departureTime !== flightToReplace.departureTime
-        )
-        console.log(`otherFlightTimes: ${JSON.stringify(otherFlightTimes)}`)
-        let hasFlightBeenReplaced = false
-        sortBy(otherFlightTimes, 'departureTime').forEach((otherFlight) => {
-            // only replace the first found
-            if (
-                !hasFlightBeenReplaced &&
-                shouldFlightBeReplaced(flightToReplace, otherFlight, now)
-            ) {
-                console.log(
-                    `replacing flight with ${JSON.stringify(otherFlight)}`
-                )
-                replaceFlight(flights, flightToReplace, otherFlight)
-                hasFlightBeenReplaced = true
-            }
-        })
-    })
-    return flights
-}
-
 /**
- * Using the current time, find the next flight
+ * Using the current time and the full list of flights return a list of flights where the "next" flight to a destination is shown.
+ *  If the last flight to a destination has already departed, make sure to still include it in the list so it shows departed.
  * @param {*} flights
  * @param {*} now, timestamp of right now
  */
 export const filterFlights = (flights, now = moment().valueOf()) => {
-    return flights.reduce((acc, flight) => {
-        // do we have the flight already in the list
-        const foundFlight = find(acc, { destination: flight.destination })
-        // if we don't pop it on the list
-        if (!foundFlight) {
-            acc.push(flight)
-        } else if (shouldFlightBeReplaced(foundFlight, flight, now)) {
-            // current flight is in the future, but mine is closer
-            replaceFlight(acc, foundFlight, flight)
+    const flightMap = flights.reduce((acc, flight) => {
+        if (!acc[flight.destination]) {
+            acc[flight.destination] = flight // only push the destination once
+        } else if (
+            shouldFlightBeReplaced(acc[flight.destination], flight, now)
+        ) {
+            acc[flight.destination] = flight
         }
         return acc
-    }, [])
+    }, {})
+    return sortBy(Object.values(flightMap), 'destination')
+}
+
+/**
+ *
+ *
+ * @param {*} startIndex index to start the page of flights from
+ * @param {*} flightsWithUniqueDestinations.  Array containing all destinations but only flight per destinatio
+ * @param {*} flightsPerPage Number of flights shown per page
+ * @returns
+ */
+export const determineCurrentPageDisplayedFlights = (
+    startIndex,
+    flightsWithUniqueDestinations,
+    flightsPerPage
+) => {
+    return flightsWithUniqueDestinations
+        .slice(startIndex, startIndex + flightsPerPage)
+        .concat(
+            flightsWithUniqueDestinations.slice(
+                0,
+                Math.max(
+                    0,
+                    startIndex +
+                        flightsPerPage -
+                        flightsWithUniqueDestinations.length
+                )
+            )
+        )
 }
 
 /** find the right audio file for a destination */

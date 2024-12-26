@@ -1,8 +1,4 @@
-import {
-    normalizeFlight,
-    filterFlights,
-    findNewFlightTimes,
-} from '../dataUtils'
+import { normalizeFlight, filterFlights } from '../dataUtils'
 
 describe('dataUtils', () => {
     test('normalizeFlight', () => {
@@ -29,50 +25,71 @@ describe('dataUtils', () => {
         expect(normalizedFlight.destination).toBeDefined()
         expect(normalizedFlight.status).toBeDefined()
     })
-    test('filterFlights', () => {
-        const mockFlights = [
-            { departureTime: 1, destination: 'Abame' },
-            { departureTime: 3, destination: 'Abame' },
-        ]
-        expect(filterFlights(mockFlights, 0)).toHaveLength(1)
-        expect(filterFlights(mockFlights, 0)[0]).toEqual({
-            departureTime: 1,
-            destination: 'Abame',
+    describe('filterFlights', () => {
+        test('filterFlights removes duplicates', () => {
+            const mockFlights = [
+                { departureTime: 1, destination: 'Abame' },
+                { departureTime: 3, destination: 'Abame' },
+            ]
+            expect(filterFlights(mockFlights, 0)).toHaveLength(1)
+            expect(filterFlights(mockFlights, 0)[0]).toEqual({
+                departureTime: 1,
+                destination: 'Abame',
+            })
+            expect(filterFlights(mockFlights, 2)).toHaveLength(1)
+            expect(filterFlights(mockFlights, 2)[0]).toEqual({
+                departureTime: 3,
+                destination: 'Abame',
+            })
         })
-        expect(filterFlights(mockFlights, 2)).toHaveLength(1)
-        expect(filterFlights(mockFlights, 2)[0]).toEqual({
-            departureTime: 3,
-            destination: 'Abame',
+        test('filterFlights leaves last flight in so it can show departed', () => {
+            const mockFlights = [
+                { departureTime: 1, destination: 'Departed Flight' },
+                { departureTime: 3, destination: 'Abame' },
+            ]
+            const filteredFlights = filterFlights(mockFlights, 2)
+            expect(filteredFlights).toHaveLength(2)
+            expect(filterFlights(mockFlights, 0)).toEqual([
+                {
+                    departureTime: 3,
+                    destination: 'Abame',
+                },
+                {
+                    departureTime: 1,
+                    destination: 'Departed Flight',
+                },
+            ])
         })
     })
-    test('findNewFlightTimes', () => {
-        const mockFlights = [
-            { departureTime: 1, destination: 'Abame' },
-            { departureTime: 3, destination: 'Abame' },
-            { departureTime: 5, destination: 'Abame' },
-        ]
 
-        // haven't started yet
-        expect(findNewFlightTimes(mockFlights, [mockFlights[0]], 0)).toEqual([
-            mockFlights[0],
-        ])
-        expect(findNewFlightTimes(mockFlights, [mockFlights[0]], 1)).toEqual([
-            mockFlights[0],
-        ])
-        expect(findNewFlightTimes(mockFlights, [mockFlights[0]], 2)).toEqual([
-            mockFlights[1],
-        ])
-        expect(findNewFlightTimes(mockFlights, [mockFlights[1]], 3)).toEqual([
-            mockFlights[1],
-        ])
-        expect(findNewFlightTimes(mockFlights, [mockFlights[1]], 4)).toEqual([
-            mockFlights[2],
-        ])
-        expect(findNewFlightTimes(mockFlights, [mockFlights[2]], 5)).toEqual([
-            mockFlights[2],
-        ])
-        expect(findNewFlightTimes(mockFlights, [mockFlights[2]], 6)).toEqual([
-            mockFlights[2],
-        ])
-    })
+    // test('findNewFlightTimes', () => {
+    //     const mockFlights = [
+    //         { departureTime: 1, destination: 'Abame' },
+    //         { departureTime: 3, destination: 'Abame' },
+    //         { departureTime: 5, destination: 'Abame' },
+    //     ]
+
+    //     // haven't started yet
+    //     expect(findNewFlightTimes(mockFlights, [mockFlights[0]], 0)).toEqual([
+    //         mockFlights[0],
+    //     ])
+    //     expect(findNewFlightTimes(mockFlights, [mockFlights[0]], 1)).toEqual([
+    //         mockFlights[0],
+    //     ])
+    //     expect(findNewFlightTimes(mockFlights, [mockFlights[0]], 2)).toEqual([
+    //         mockFlights[1],
+    //     ])
+    //     expect(findNewFlightTimes(mockFlights, [mockFlights[1]], 3)).toEqual([
+    //         mockFlights[1],
+    //     ])
+    //     expect(findNewFlightTimes(mockFlights, [mockFlights[1]], 4)).toEqual([
+    //         mockFlights[2],
+    //     ])
+    //     expect(findNewFlightTimes(mockFlights, [mockFlights[2]], 5)).toEqual([
+    //         mockFlights[2],
+    //     ])
+    //     expect(findNewFlightTimes(mockFlights, [mockFlights[2]], 6)).toEqual([
+    //         mockFlights[2],
+    //     ])
+    // })
 })

@@ -3,20 +3,19 @@ import './App.css'
 import FlightDeparturesTable from './FlightDeparturesTable'
 import moment from 'moment'
 // import omit from 'lodash/omit'
-import sortBy from 'lodash/sortBy'
 // import { fetchFlights } from './api/FlightsAPI'
 // import logo from './imgs/InterimaginaryDepartures-logo.png'
 import isEqual from 'lodash/isEqual'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchAllFlights } from './api/FlightsActions'
 import {
+    determineCurrentPageDisplayedFlights,
     determineOnTimeStatus,
     filterFlights,
-    findNewFlightTimes,
 } from './api/dataUtils'
 
 const FLIGHTS_PER_PAGE = 29
-const FLIGHTS_TO_ADVANCE = 6
+const FLIGHTS_TO_ADVANCE = 7
 // Show Now Boarding for any flight within the next 3.5 minutes
 const BOARDING_TIME = 3.5
 // Number of seconds to delay before flipping the page
@@ -24,62 +23,53 @@ const PAGE_DELAY = 15
 // const PAGE_DELAY = 1000000
 
 const App = () => {
-    const reduxFlights = useSelector(
-        (state) => sortBy(state?.flights?.data, 'destination'), // could actually store this way in the reducer so I don't need to memoize
-        isEqual
-    )
+    /** Has full list of flights not flitered */
+    const reduxFlights = useSelector((state) => state?.flights?.data, isEqual)
     const dispatch = useDispatch()
 
-    const [currentTime, setCurrentTime] = useState(moment().valueOf()) // eslint-disable-line
-    const [flights, setFlights] = useState([])
-    const [currentDay, setCurrentDay] = useState(moment().day())
-    const [firstRowIsGray, setFirstRowIsGray] = useState(true)
-    // reload the flights data if we switch days
-    useEffect(() => {
-        dispatch(fetchAllFlights(currentDay))
-    }, [currentDay, dispatch])
+    const [startFlight, setStartFlight] = useState(0)
+    const [currentDay] = useState(moment().day())
 
+    /** Load on initial render */
     useEffect(() => {
-        // apply a time filter to flights
-        setFlights(filterFlights(sortBy(reduxFlights, 'destination')))
-    }, [reduxFlights])
-
-    // update the current time every 5 seconds, TODO: why can't I do this with isMemo on on the delay useEffect render
-    useEffect(() => {
+        // Keep trying to fetch flights until we get them (the nodejs server might not be started yet)
         const interval = setInterval(() => {
-            const now = moment()
-            setCurrentTime(now.valueOf())
-            setCurrentDay(now.day())
-        }, 10000)
-        return () => clearInterval(interval)
-    }, [])
-
-    // replace the old flight after it has boarded
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setFlights((flights) =>
-                findNewFlightTimes(reduxFlights, flights, moment().valueOf())
-            )
-        }, (BOARDING_TIME / 2) * 60 * 1000)
-        return () => clearInterval(interval)
-    }, [reduxFlights])
-
-    // shift the flights over by the FLIGHTS_TO_ADVANCE
-    // I couldn't just slice on the starting point of the array because it doesn't wrap around infinitely
-    useEffect(() => {
-        const interval = setInterval(() => {
-            for (
-                let flightsToAdvance = 0;
-                flightsToAdvance < FLIGHTS_TO_ADVANCE;
-                flightsToAdvance++
-            ) {
-                flights.push(flights.shift()) // take the top element and stick onto the end of the array for 12 flights TODO: probably shouldn't mutate the existing state
+            if (!reduxFlights || reduxFlights.length === 0) {
+                console.log('retrying flights')
+                dispatch(fetchAllFlights(currentDay))
             }
-            setFlights(flights)
-            setFirstRowIsGray((firstRowIsGray) => !firstRowIsGray)
+        }, 1000)
+
+        if (reduxFlights && reduxFlights.length > 0) {
+            console.log('found flights', reduxFlights)
+            clearInterval(interval)
+        }
+
+        return () => clearInterval(interval)
+    }, [currentDay, dispatch, reduxFlights])
+
+    const flightsWithUniqueDestinations = filterFlights(reduxFlights ?? [])
+
+    // Advance the page of flights
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // If we're on a different day, reload the whole app
+            const now = moment()
+            if (now.day() !== currentDay) {
+                // reload the entire app if we switch days
+                window.location.reload()
+            } else {
+                setStartFlight(
+                    (startFlight) =>
+                        (startFlight + FLIGHTS_TO_ADVANCE) %
+                        flightsWithUniqueDestinations.length
+                )
+            }
         }, PAGE_DELAY * 1000)
         return () => clearInterval(interval)
-    }, [flights])
+    }, [currentDay, dispatch, flightsWithUniqueDestinations])
+
+    console.log('start Flight', startFlight)
 
     return (
         <div className="app">
@@ -89,8 +79,12 @@ const App = () => {
                 <h2>Interimaginary Departures</h2>
             </div>
             <FlightDeparturesTable
-                startGray={firstRowIsGray}
-                flights={flights.slice(0, FLIGHTS_PER_PAGE).map((flight) => ({
+                startGray={startFlight % 2 === 0} // even starts gray
+                flights={determineCurrentPageDisplayedFlights(
+                    startFlight,
+                    flightsWithUniqueDestinations,
+                    FLIGHTS_PER_PAGE
+                ).map((flight) => ({
                     ...flight,
                     status: determineOnTimeStatus(flight, BOARDING_TIME),
                 }))}

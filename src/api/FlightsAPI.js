@@ -14,7 +14,7 @@ export const fetchFlights = (day) =>
                 process.env.REACT_APP_SERVER_API_URL || 'http://127.0.0.1:8080',
         }
     ).then((response) => {
-        console.log('fetch response')
+        console.log('fetch response', response.status)
         if (response.ok) {
             return response
                 .json()
